@@ -28,7 +28,7 @@
 			<br>
 			<table width=510 border=1>
 				<tr>
-					<td>[${count-status.index }]</td>
+					<td>[${status.index + count}]</td>
 					<td>${vo.name }</td>
 					<td>${vo.regdate }</td>
 					<td><a href="${pageContext.request.contextPath }/delete/${vo.no}">삭제</a></td>

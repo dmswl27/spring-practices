@@ -26,7 +26,7 @@ public class GuestbookController {
 	}
 	
 	@RequestMapping(value = "/delete/{no}", method = RequestMethod.GET)
-	public String deleteform(Long no, Model model) {
+	public String deleteform(@PathVariable("no") Long no, Model model) {
 		model.addAttribute("no",no);
 		return "/WEB-INF/views/deleteform.jsp";
 	}
