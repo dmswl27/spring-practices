@@ -1,4 +1,5 @@
-package com.douzone.emaillist.repository;
+package com.douzone.guestbook.repository;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,25 +10,60 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.douzone.emaillist.vo.EmaillistVo;
-
+import com.douzone.guestbook.vo.GuestbookVo;
 @Repository
-public class EmaillistRepository {
-	public Boolean insert(EmaillistVo vo) {
+public class GuestbookRepository {
+	public Boolean delete(Long no, String passward) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		boolean result = false;
+		
+		try {
+			conn = getConnection();
+
+			String sql = "delete from guestbook where no = ? and passward = ? ";
+			stmt = conn.prepareStatement(sql);
+			stmt.setLong(1, no);
+			stmt.setString(2, passward);
+			
+			
+			int count = stmt.executeUpdate();
+			result = count == 1;
+			
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+			try {
+				// 자원정리(clean-up)
+				if(stmt != null) {
+					stmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result;		
+	}
+	public Boolean insert(GuestbookVo vo) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		boolean result = false;
 		
 		try {
 			conn = getConnection();
-			
+
 			String sql = "insert "
-					+ "  into emaillist "
-					+ "  values (null, ? , ? ,?)";
+					+ "	  into guestbook "
+					+ "    values(null, ?, ?, ?,now()) ";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, vo.getFirstName());
-			pstmt.setString(2, vo.getLastName());
-			pstmt.setString(3, vo.getEmail());
+			pstmt.setString(1, vo.getName());
+			pstmt.setString(2, vo.getPassward());
+			pstmt.setString(3, vo.getMessage());
+			
 			
 			int count = pstmt.executeUpdate();
 			result = count == 1;
@@ -51,8 +87,8 @@ public class EmaillistRepository {
 		return result;		
 	}
 
-	public List<EmaillistVo> findAll() {
-		List<EmaillistVo> result = new ArrayList<>();
+	public List<GuestbookVo> findAll() {
+		List<GuestbookVo> result = new ArrayList<>();
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -60,25 +96,26 @@ public class EmaillistRepository {
 		
 		try {
 			conn = getConnection();
-			
-			String sql ="select no, first_name, last_name, email  "
-					+ "  from emaillist  "
-					+ "   order by no desc";
+			String sql =" select no, name, passward, message, reg_date "
+					+ "  from guestbook "
+					+ "  order by no desc";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
 
 			while(rs.next()) {
 				long no = rs.getLong(1);
-				String first_name = rs.getString(2);
-				String last_name = rs.getString(3);
-				String email = rs.getString(4);
+				String name = rs.getString(2);
+				String passward = rs.getString(3);
+				String message = rs.getString(4);
+				String reg_date = rs.getString(5);
 
-				EmaillistVo vo = new EmaillistVo();
+				GuestbookVo vo = new GuestbookVo();
 				vo.setNo(no);
-				vo.setFirstName(first_name);
-				vo.setLastName(last_name);
-				vo.setEmail(email);
+				vo.setName(name);
+				vo.setPassward(passward);
+				vo.setMessage(message);
+				vo.setRegdate(reg_date);
 				
 				result.add(vo);
 			}
