@@ -22,7 +22,8 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
-	public String join(UserVo vo) {
+	public String join(UserVo vo /*Modle model*/) {
+	    // model.addAttribute( "userVo", vo );
 		System.out.println(vo);
 		return "redirect:/";
 	}
