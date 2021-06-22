@@ -8,11 +8,12 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>container</artifactId>
-
+	<packaging>jar</packaging>
+	
 	<properties>
-		<org.springframework-version>4.3.4.RELEASE</org.springframework-version>
+	     <org.springframework-version>4.3.4.RELEASE</org.springframework-version>
 	</properties>
-
+	
 	<dependencies>
 		<!-- Spring Context(Container) -->
 		<dependency>
@@ -20,8 +21,8 @@
 			<artifactId>spring-context</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
-
-		<!-- Test -->
+		
+		<!-- test -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
@@ -39,7 +40,6 @@
 			<version>1.19.0</version>
 			<scope>test</scope>
 		</dependency>
-
-	</dependencies>
-
+		
+	</dependencies>	
 </project>
